@@ -35,8 +35,8 @@ LiquidCrystal_I2C  lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin
 void setup()   /****** SETUP: RUNS ONCE ******/
 {
   Serial.begin(9600);
-  Serial.println("Resetting the dammed SR-04 UltraSonic Distance Meter");
-  Serial.println("questions to vidalgm@gmail.com");
+//  Serial.println("Resetting the dammed SR-04 UltraSonic Distance Meter");
+//  Serial.println("questions to vidalgm@gmail.com");
   pinMode (resetsensor, OUTPUT);
   pinMode (ledsensor, OUTPUT);
   pinMode(2, OUTPUT);
@@ -55,16 +55,16 @@ void loop()   /****** LOOP: RUNS CONSTANTLY ******/
   digitalWrite (resetsensor,HIGH); //Gives power to the dammned SR-04 thru the BC-547
   delay(100);// Wait 100ms between pings (about 10 pings/sec). 29ms should be the shortest delay between pings.
   DistanceIn = sonar.ping_in();
-  Serial.print("Ping: ");
-  Serial.print(DistanceIn); // Convert ping time to distance and print result
-                            // (0 = outside set distance range, no ping echo)
-  Serial.print(" in     ");
+//  Serial.print("Ping: ");
+//  Serial.print(DistanceIn); // Convert ping time to distance and print result
+//                            // (0 = outside set distance range, no ping echo)
+//  Serial.print(" in     ");
  
   delay(100);// Wait 100ms between pings (about 10 pings/sec). 29ms should be the shortest delay between pings.
   DistanceCm = sonar.ping_cm();
-  Serial.print("Ping: ");
-  Serial.print(DistanceCm);
-  Serial.println(" cm");
+//  Serial.print("Ping: ");
+//  Serial.print(DistanceCm);
+//  Serial.println(" cm");
   if (DistanceCm < 1) {  //If distance is getting too low
     digitalWrite (resetsensor, LOW); //reset transistor, this is, take out power of SR-04
     digitalWrite (ledsensor, LOW); //light down to indicate we are resetting
