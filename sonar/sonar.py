@@ -86,6 +86,7 @@ blipImage = pygame.image.load("blip.png").convert_alpha()
 start_time = time.time()
 foundBlip = False
 blipAngle = 0
+max_distance = 50
 
 while done == False:
     done = mustQuit()
@@ -99,11 +100,12 @@ while done == False:
 
     if (foundBlip):
         if ((time.time() - start_time) <= 1):
-            screen.blit(blipImage, ((midpoint[0] + ((valid_width * 200) / 400) * math.sin(blipAngle)), (midpoint[1] + ((valid_height * 200) / 400) * math.cos(blipAngle))))
+            screen.blit(blipImage, ((midpoint[0] + ((valid_width * distance) / max_distance) * math.sin(blipAngle)), (midpoint[1] + ((valid_height * distance) / max_distance) * math.cos(blipAngle))))
 
     if ((time.time() - start_time) >= 2):
         foundBlip = True
         blipAngle = angle
+        distance = 40
         start_time = time.time()
 
     pygame.display.update()
