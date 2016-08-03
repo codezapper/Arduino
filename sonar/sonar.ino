@@ -17,8 +17,8 @@
 
 #define TRIGGER_PIN  7
 #define ECHO_PIN     6
-#define MAX_DISTANCE 200 // Maximum distance we want to ping for (in centimeters).
-                          //Maximum sensor distance is rated at 400-500cm.
+#define MAX_DISTANCE 50 // Maximum distance we want to ping for (in centimeters).
+                        //Maximum sensor distance is rated at 400-500cm.
 
 int DistanceIn;
 int DistanceCm;
@@ -107,6 +107,7 @@ void loop()
       memset(str_to_send, 0, 255);
       sprintf(str_to_send, "%d;%d;%d;%s;%d", angle, prev_angle, Xpos, str_temp, distance_cm);
       Serial.println(str_to_send);
+      Serial.flush();
       prev_angle = angle;
       memset(first_row, ' ', 16);
       memset(second_row, ' ', 16);

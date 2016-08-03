@@ -98,7 +98,7 @@ while done == False:
     serial_string = serial_port.readline()
     serial_values = serial_string.split(";")
     if (len(serial_values) == 5):
-        angle = ((int(serial_values[3]) + 180) * pi) / 180.0
+        angle = ((int(serial_values[3])) * pi) / 180.0
         distance = int(serial_values[4])
         print distance
 
