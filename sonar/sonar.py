@@ -2,10 +2,12 @@
 import math
 import pygame
 import pygame.gfxdraw
+import serial
 import time
 
 pygame.init()
- 
+serial_port = serial.Serial('/dev/ttyACM0', 115200)
+
 background_color    = [ 0,   0,   0 ]
 sweep_color         = [ 0,   120, 0 ]
 outer_border_color  = [ 10,  55,  10 ]
@@ -73,7 +75,7 @@ def drawInnerCircle():
     pygame.gfxdraw.aacircle(screen, midpoint[0], midpoint[1], inner_circle_radius - inner_border_width, inner_circle_color)
     pygame.gfxdraw.filled_ellipse(screen, midpoint[0], midpoint[1], inner_circle_radius - inner_border_width, inner_circle_radius - inner_border_width, inner_circle_color)
 
-def mustQuit():
+def must_quit():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return True
@@ -87,10 +89,18 @@ start_time = time.time()
 foundBlip = False
 blipAngle = 0
 max_distance = 50
+distance = 0
 
 while done == False:
-    done = mustQuit()
+    done = must_quit()
     drawGrid()
+
+    serial_string = serial_port.readline()
+    serial_values = serial_string.split(";")
+    if (len(serial_values) == 5):
+        angle = ((int(serial_values[3]) + 180) * pi) / 180.0
+        distance = int(serial_values[4])
+        print distance
 
     [x, y, angle] = calcRotation(angle)
     pygame.draw.line(screen, sweep_color, midpoint, [x, y], 4)
@@ -98,17 +108,11 @@ while done == False:
     drawInnerCircle()
     # x = midpoint[0] + (valid_width * distance) / max_distance
 
-    if (foundBlip):
-        if ((time.time() - start_time) <= 1):
-            screen.blit(blipImage, ((midpoint[0] + ((valid_width * distance) / max_distance) * math.sin(blipAngle)), (midpoint[1] + ((valid_height * distance) / max_distance) * math.cos(blipAngle))))
-
-    if ((time.time() - start_time) >= 2):
-        foundBlip = True
-        blipAngle = angle
-        distance = 40
-        start_time = time.time()
+    if (distance > 1):
+        screen.blit(blipImage, ((midpoint[0] + ((valid_width * distance) / max_distance) * math.sin(blipAngle)), (midpoint[1] + ((valid_height * distance) / max_distance) * math.cos(blipAngle))))
 
     pygame.display.update()
     my_clock.tick(60)
 
+serial_port.close()
 pygame.quit()
